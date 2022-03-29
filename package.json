@@ -1,0 +1,11 @@
+{
+  "name": "peMan",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:DShevv/peMan.git",
+  "author": "Dmitry Shevtsov <dshevtsov20@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "create-react-app": "^5.0.0"
+  }
+}
