@@ -51,6 +51,64 @@ class UserServise {
 
     await queries.updateUser(user);
   }
+
+  async login(email, password) {
+    let user = {};
+    await queries.findUser(email).then((res) => {
+      if (!res) {
+        throw ApiError.BadRequests(`Пользователь не существует`);
+      }
+      user = { ...res.recordset[0] };
+    });
+    const isPassCorrect = await bcrypt.compare(password, user.password);
+    if (!isPassCorrect) {
+      throw ApiError.BadRequests("Неверный пароль");
+    }
+    const userDto = new UserDto(user);
+    const tokens = tokenServise.generate({ ...userDto });
+    await tokenServise.setToken(userDto.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: userDto,
+    };
+  }
+
+  async logout(refreshToken) {
+    const token = await tokenServise.removeToken(refreshToken);
+    return token;
+  }
+
+  async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
+    const userData = await tokenServise.validateRefreshToken(refreshToken);
+    const isTokenInDb = await tokenServise.findToken(refreshToken);
+    if (!userData || !isTokenInDb) {
+      throw ApiError.UnauthorizedError();
+    }
+    let user = {};
+    await queries.findUser(userData.email).then((res) => {
+      if (!res) {
+        throw ApiError.BadRequests(`Пользователь не существует`);
+      }
+      user = { ...res.recordset[0] };
+    });
+    const userDto = new UserDto(user);
+    const tokens = tokenServise.generate({ ...userDto });
+    await tokenServise.setToken(userDto.id, tokens.refreshToken);
+
+    return {
+      ...tokens,
+      user: userDto,
+    };
+  }
+
+  async getAllUsers() {
+    const users = await queries.findAll("Users");
+    return users;
+  }
 }
 
 module.exports = new UserServise();

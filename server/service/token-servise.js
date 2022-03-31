@@ -23,6 +23,40 @@ class TokenServise {
       }
     });
   }
+  async removeToken(token) {
+    const res = await queries.deleteFrom("RefToken", "refreshToken", token);
+    return res;
+  }
+
+  async validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_ACCES_SECRET);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async findToken(token) {
+    let result;
+    await queries.findBy("RefToken", "refreshToken", token).then((res) => {
+      if (res) {
+        result = true;
+      } else {
+        result = false;
+      }
+    });
+    return result;
+  }
 }
 
 module.exports = new TokenServise();

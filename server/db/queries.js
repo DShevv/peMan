@@ -73,6 +73,21 @@ const findBy = async (table, rowName, value) => {
   }
 };
 
+const findAll = async (table) => {
+  try {
+    let queryStr = `select * from ${table}`;
+    await sql.connect(sqlConfig);
+    const result = await sql.query(queryStr);
+    if (result.recordset.length > 0) {
+      return result.recordset;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const updateToken = async (id, token) => {
   try {
     await sql.connect(sqlConfig);
@@ -93,9 +108,22 @@ const createToken = async (id, token) => {
   }
 };
 
+const deleteFrom = async (table, rowName, value) => {
+  try {
+    let queryStr = `delete from ${table} where ${rowName}='${value}'`;
+    await sql.connect(sqlConfig);
+    const result = await sql.query(queryStr);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports.findUser = findUser;
 module.exports.createUser = createUser;
 module.exports.findBy = findBy;
 module.exports.updateToken = updateToken;
 module.exports.updateUser = updateUser;
+module.exports.deleteFrom = deleteFrom;
 module.exports.createToken = createToken;
+module.exports.findAll = findAll;
