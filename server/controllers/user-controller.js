@@ -76,6 +76,83 @@ class UserController {
       next(error);
     }
   }
+
+  async getCategories(req, res, next) {
+    try {
+      const { id } = req.body;
+      const categories = await userServise.getCategories(id);
+      return res.json(categories);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteCategories(req, res, next) {
+    try {
+      const { id } = req.body;
+      const categories = await userServise.deleteCategories(id);
+      return res.json(categories);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPictures(req, res, next) {
+    try {
+      const pictures = await userServise.getPictures();
+      return res.json(pictures);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createCategories(req, res, next) {
+    try {
+      const { user, name, image } = req.body;
+      const result = await userServise.createCategories(user, name, image);
+      return res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getSpendings(req, res, next) {
+    try {
+      const { id } = req.body;
+      const spendings = await userServise.getSpendings(id);
+      return res.json(spendings);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createSpendings(req, res, next) {
+    try {
+      const {
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta,
+      } = req.body;
+      const result = await userServise.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta
+      );
+      return res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UserController();

@@ -7,6 +7,11 @@ export default class Store {
   user = {};
   isAuth = false;
   isLoading = false;
+  period =
+    localStorage.getItem("period") === null
+      ? { startDate: Date.now(), length: 30, current: null }
+      : JSON.parse(localStorage.getItem("period"));
+  selectedPeriod = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +26,14 @@ export default class Store {
 
   setLoading(bool) {
     this.isLoading = bool;
+  }
+
+  setPeriod(period) {
+    this.period = period;
+  }
+
+  setCurrentPeriod(period) {
+    this.selectedPeriod = period;
   }
 
   async login(email, password) {

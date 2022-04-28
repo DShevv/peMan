@@ -24,7 +24,7 @@ function Header(props) {
   const { store } = useContext(Context);
   return (
     <StyledHeader>
-      PeMan {store.user.name}
+      PeMan
       {store.isAuth ? (
         <button onClick={(e) => store.logout()}>Выйти</button>
       ) : (

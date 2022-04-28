@@ -109,6 +109,65 @@ class UserServise {
     const users = await queries.findAll("Users");
     return users;
   }
+
+  async getCategories(id) {
+    const categories = await queries.getCategories(id);
+    return categories;
+  }
+  async deleteCategories(id) {
+    const categories = await queries.deleteCategory(id);
+    return categories;
+  }
+
+  async getPictures() {
+    const pictures = await queries.findAll("Pictures");
+    return pictures;
+  }
+
+  async createCategories(user, name, pic) {
+    const result = await queries.createCategories(user.id, name, pic);
+    return result;
+  }
+
+  async getSpendings(id) {
+    const spendings = await queries.findBy("Spendings", "Usert", id);
+    return spendings.recordset;
+  }
+
+  async createSpendings(
+    userId,
+    categoryId,
+    value,
+    currency,
+    date,
+    isPeriod,
+    delta,
+    notiDelta
+  ) {
+    let result;
+    if (isPeriod) {
+      result = await queries.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta
+      );
+    } else {
+      result = await queries.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod
+      );
+    }
+    return result;
+  }
 }
 
 module.exports = new UserServise();
