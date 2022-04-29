@@ -212,6 +212,7 @@ function AddSpend(props) {
           delta,
           notiDelta
         );
+        store.fetchSpendings();
         setOpened(false);
         props.click(null);
       }
