@@ -1,6 +1,6 @@
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
-import { API_URL } from "../http";
+import api, { API_URL } from "../http";
 import AuthService from "../services/authService";
 
 export default class Store {
@@ -12,6 +12,7 @@ export default class Store {
       ? { startDate: Date.now(), length: 30, current: null }
       : JSON.parse(localStorage.getItem("period"));
   selectedPeriod = {};
+  spendings = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -34,6 +35,14 @@ export default class Store {
 
   setCurrentPeriod(period) {
     this.selectedPeriod = period;
+  }
+
+  setSpendings(spendings) {
+    if (typeof spendings !== "string") {
+      this.spendings = spendings;
+    } else {
+      this.spendings = null;
+    }
   }
 
   async login(email, password) {
@@ -85,6 +94,22 @@ export default class Store {
       console.log(error.response?.data?.message);
     } finally {
       this.setLoading(false);
+    }
+  }
+
+  async fetchSpendings() {
+    try {
+      const response = await api.post(`/spendings`, {
+        user: this.user,
+        date: {
+          start: this.selectedPeriod.start,
+          end: this.selectedPeriod.end,
+        },
+      });
+      this.setSpendings(response.data);
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    } finally {
     }
   }
 }

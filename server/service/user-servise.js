@@ -129,8 +129,8 @@ class UserServise {
     return result;
   }
 
-  async getSpendings(id) {
-    const spendings = await queries.findBy("Spendings", "Usert", id);
+  async getSpendings(id, date) {
+    const spendings = await queries.getSpendings(id, date);
     return spendings.recordset;
   }
 

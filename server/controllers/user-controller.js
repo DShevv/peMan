@@ -118,8 +118,8 @@ class UserController {
 
   async getSpendings(req, res, next) {
     try {
-      const { id } = req.body;
-      const spendings = await userServise.getSpendings(id);
+      const { user, date } = req.body;
+      const spendings = await userServise.getSpendings(user.id, date);
       return res.json(spendings);
     } catch (error) {
       next(error);

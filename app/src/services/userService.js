@@ -42,4 +42,18 @@ export default class UserService {
       notiDelta,
     });
   }
+
+  static async fetchSpendings(user, date) {
+    try {
+      const response = await api.post(`/spendings`, {
+        user,
+        date,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    } finally {
+    }
+  }
 }

@@ -22,6 +22,7 @@ const Container = styled.div`
   transition: all 0.1s ease-in-out;
   overflow: hidden;
   row-gap: 20px;
+  z-index: 10;
 `;
 
 const Caption = styled.div`

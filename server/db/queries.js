@@ -224,6 +224,25 @@ const createSpendings = async (
   }
 };
 
+const getSpendings = async (id, date) => {
+  try {
+    let sqlDate = {
+      start: new Date(date.start).toISOString(),
+      end: new Date(date.end).toISOString(),
+    };
+    let queryStr = `select * from Spendings where Usert='${id}' and Date between '${sqlDate.start}' and '${sqlDate.end}'`;
+    await sql.connect(sqlConfig);
+    const result = await sql.query(queryStr);
+    if (result.recordset.length > 0) {
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports.findUser = findUser;
 module.exports.createUser = createUser;
 module.exports.findBy = findBy;
@@ -237,3 +256,4 @@ module.exports.getCategories = getCategories;
 module.exports.createCategories = createCategories;
 module.exports.getPictures = getPictures;
 module.exports.createSpendings = createSpendings;
+module.exports.getSpendings = getSpendings;

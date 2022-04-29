@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useContext } from "react";
 import styled from "styled-components";
 import { Context } from "../../../..";
+import UserService from "../../../../services/userService";
 
 const Container = styled.div`
   position: relative;
@@ -132,9 +133,8 @@ function PeriodSize(props) {
 
   useEffect(() => {
     localStorage.setItem("period", JSON.stringify(store.period));
-
     checkDate({ ...store.period });
-  }, [store.period, setPeriod]);
+  }, [store.period]);
 
   useEffect(() => {
     if (props.move !== null) {
@@ -152,13 +152,19 @@ function PeriodSize(props) {
         });
       }
 
-      store.setCurrentPeriod({
-        start: period.startDate,
-        end: period.startDate + period.length * 24 * 60 * 60 * 1000,
-      });
       props.clearMove();
     }
   }, [props.move]);
+
+  useEffect(() => {
+    store.setCurrentPeriod({
+      start: period.startDate,
+      end:
+        period.startDate +
+        period.length * 24 * 60 * 60 * 1000 -
+        24 * 60 * 60 * 1000,
+    });
+  }, [period]);
 
   function checkDate(test) {
     let now = Date.now();
@@ -201,7 +207,9 @@ function PeriodSize(props) {
         {`${new Date(period.startDate)
           .toLocaleDateString()
           .slice(0, 5)} по ${new Date(
-          period.startDate + period.length * 24 * 60 * 60 * 1000
+          period.startDate +
+            period.length * 24 * 60 * 60 * 1000 -
+            24 * 60 * 60 * 1000
         )
           .toLocaleDateString()
           .slice(0, 5)}`}
