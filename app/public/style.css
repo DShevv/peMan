@@ -14,3 +14,12 @@ body,
   display: flex;
   flex-direction: column;
 }
+
+text {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 29px;
+  color: #4b4b4b;
+}

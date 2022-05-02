@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import PeriodGoal from "./PeriodGoal";
@@ -8,7 +7,6 @@ import { useContext } from "react";
 import { Context } from "../../../..";
 import arrow from "../../../../accets/arrow.svg";
 import { useEffect } from "react";
-import UserService from "../../../../services/userService";
 
 const Container = styled.div`
   background-color: #ffffff;
