@@ -82,6 +82,7 @@ function CategoryList(props) {
     try {
       const response = await UserService.fetchCategories(store.user.id);
       setCategories(response.data);
+      store.setCategories(response.data);
     } catch (error) {
       console.log(error);
     }

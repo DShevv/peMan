@@ -13,6 +13,7 @@ export default class Store {
       : JSON.parse(localStorage.getItem("period"));
   selectedPeriod = {};
   spendings = null;
+  categodies = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -43,6 +44,10 @@ export default class Store {
     } else {
       this.spendings = null;
     }
+  }
+
+  setCategories(cats) {
+    this.categodies = cats;
   }
 
   async login(email, password) {

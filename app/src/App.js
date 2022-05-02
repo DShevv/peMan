@@ -6,6 +6,7 @@ import AuthForm from "./components/AuthForm/AuthForm";
 import Header from "./components/header";
 import { observer } from "mobx-react-lite";
 import MainComponent from "./components/MainComponent/MainComponent";
+import Statistic from "./components/Statistic/Statistic";
 
 const Main = styled.main`
   display: flex;
@@ -36,7 +37,7 @@ function App() {
               <Route index element={<AuthForm />} />
             )}
             {store.isAuth ? (
-              <Route path="statistics" element={<div />} />
+              <Route path="statistics" element={<Statistic />} />
             ) : (
               <Route path="statistics" element={<AuthForm />} />
             )}

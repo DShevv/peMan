@@ -118,7 +118,7 @@ function ChartComponent() {
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [store.categodies]);
 
   useEffect(() => {
     if (store.spendings !== null) {

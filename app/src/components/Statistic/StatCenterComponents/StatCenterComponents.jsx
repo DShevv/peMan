@@ -2,9 +2,10 @@ import React from "react";
 
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import PeriodComponent from "./PeriodComponent/PeriodComponent";
+import StatPeriodComponent from "./StatPeriodComponent/StatPeriodComponent";
 import ChartComponent from "./ChartComponent/ChartComponent";
 import { NavLink } from "react-router-dom";
+import PeriodStatComponent from "./PeriodStatComponent/PeriodStatComponent";
 
 const Main = styled.div`
   background-color: transparent;
@@ -55,16 +56,27 @@ const LinkButton = styled(NavLink)`
   }
 `;
 
-function CenterComponents() {
+const Container = styled.div`
+  height: 100px;
+  width: 100%;
+  display: flex;
+  column-gap: 20px;
+`;
+
+function StatCenterComponents() {
   return (
     <Main>
-      <PeriodComponent />
+      <Container>
+        <StatPeriodComponent />
+        <PeriodStatComponent />
+      </Container>
+
       <ChartComponent />
       <ToStat>
-        <LinkButton to="statistics">Статистика</LinkButton>
+        <LinkButton to="/">На главную</LinkButton>
       </ToStat>
     </Main>
   );
 }
 
-export default observer(CenterComponents);
+export default observer(StatCenterComponents);

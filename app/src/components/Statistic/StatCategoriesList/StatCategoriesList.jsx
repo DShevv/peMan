@@ -5,7 +5,7 @@ import SortPanel from "./SortPanel";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { Context } from "../../..";
-import Operation from "./Operation";
+import StatCategory from "./StatCategory";
 import UserService from "../../../services/userService";
 
 const Conatiner = styled.div`
@@ -67,10 +67,11 @@ const StyledList = styled.div`
   }
 `;
 
-function OperationsList(props) {
+function StatCategoriesList(props) {
   const { store } = useContext(Context);
-  const [selected, setSelected] = useState({ pos: 1, up: false });
-  const [categories, setCategories] = useState(null);
+  const [selected, setSelected] = useState({ pos: 2, up: false });
+  const [allCategories, setCategories] = useState(null);
+  const [curCat, setCurCat] = useState(null);
 
   async function getCategories() {
     try {
@@ -82,26 +83,43 @@ function OperationsList(props) {
   }
 
   useEffect(() => {
-    setCategories(null);
     getCategories();
-  }, [store.spendings, store.categodies]);
+  }, [store.spendings]);
+
+  useEffect(() => {
+    if (store.spendings !== null) {
+      const categories = store.spendings
+        .map((elem) => elem.Category)
+        .filter((value, index, arr) => {
+          return arr.indexOf(value) === index;
+        });
+      const spendingsPerCategory = categories.map((elem) => {
+        let sum = store.spendings
+          .filter((value) => value.Category === elem)
+          .reduce((prev, curr) => prev + curr.Value, 0);
+        return {
+          name:
+            allCategories !== null
+              ? allCategories.find((cat) => cat.id == elem).Name
+              : "",
+          value: sum,
+          pic:
+            allCategories !== null
+              ? allCategories.find((cat) => cat.id == elem).Pic
+              : "",
+        };
+      });
+      setCurCat(spendingsPerCategory);
+    } else {
+      setCurCat(null);
+    }
+  }, [allCategories]);
 
   function compare(a, b) {
     if (selected.pos === 1) {
-      let date1 = new Date(a?.Date);
-      let date2 = new Date(b?.Date);
-      if (date1 > date2) {
-        return selected.up ? 1 : -1;
-      }
-      if (date1 < date2) {
-        return selected.up ? -1 : 1;
-      }
-      return 0;
-    }
-    if (selected.pos === 2) {
       if (store.spendings !== null) {
-        let cat1 = a.Category;
-        let cat2 = b.Category;
+        let cat1 = a.name;
+        let cat2 = b.name;
         if (cat1 > cat2) {
           return selected.up ? 1 : -1;
         }
@@ -111,11 +129,11 @@ function OperationsList(props) {
         return 0;
       }
     }
-    if (selected.pos === 3) {
-      if (a.Value > b.Value) {
+    if (selected.pos === 2) {
+      if (a.value > b.value) {
         return selected.up ? 1 : -1;
       }
-      if (a.Value < b.Value) {
+      if (a.value < b.value) {
         return selected.up ? -1 : 1;
       }
       return 0;
@@ -130,27 +148,20 @@ function OperationsList(props) {
     <Conatiner>
       <SortPanel selected={selected} changeSelected={changeSelected} />
       <StyledList>
-        {store.spendings !== null
-          ? store.spendings
-              .slice()
-              .sort(compare)
-              .map((elem) => {
-                return (
-                  <Operation
-                    key={elem.id}
-                    data={elem}
-                    category={
-                      categories !== null
-                        ? categories.find((cat) => cat.id === elem.Category)
-                        : ""
-                    }
-                  />
-                );
-              })
+        {curCat !== null
+          ? curCat.sort(compare).map((elem, index) => {
+              return (
+                <StatCategory
+                  key={`${elem.name}${index}`}
+                  data={elem}
+                  category={elem}
+                />
+              );
+            })
           : ""}
       </StyledList>
     </Conatiner>
   );
 }
 
-export default observer(OperationsList);
+export default observer(StatCategoriesList);

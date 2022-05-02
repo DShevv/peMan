@@ -76,7 +76,6 @@ const CreationCont = styled.div`
   border-radius: 10px;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   transition: all 0.2s ease-in-out;
-  z-index: 10;
 `;
 
 const Button = styled.button`
