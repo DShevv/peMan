@@ -6,6 +6,7 @@ import { Context } from "../../..";
 import Category from "./Category";
 import Create from "./Create";
 import AddSpend from "./AddSpend/AddSpend";
+import { toast } from "react-toastify";
 
 const StyledList = styled.div`
   position: relative;
@@ -84,7 +85,7 @@ function CategoryList(props) {
       setCategories(response.data);
       store.setCategories(response.data);
     } catch (error) {
-      console.log(error);
+      toast.warn("Не удалось получить данные");
     }
   }
 

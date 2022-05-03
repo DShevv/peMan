@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../../..";
 import UserService from "../../../services/userService";
 import PicSelector from "./PicSelector";
+import { toast } from "react-toastify";
 
 const StyledCategory = styled.div`
   flex: ${(props) => (props.opened ? "0 0 100%" : "0 0 70px")};
@@ -76,11 +77,12 @@ const Caption = styled.div`
   color: #4b4b4b;
 `;
 
-function useOutsideClick(ref, toggle) {
+function useOutsideClick(ref, toggle, setCategory) {
   useEffect(() => {
     function handelClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
         toggle(false);
+        setCategory({});
       }
     }
 
@@ -88,14 +90,14 @@ function useOutsideClick(ref, toggle) {
     return () => {
       document.removeEventListener("mousedown", handelClickOutside);
     };
-  }, [ref, toggle]);
+  }, [ref, toggle, setCategory]);
 }
 
 function Create(props) {
   const { store } = useContext(Context);
   const [category, setCategory] = useState({});
   const wrapperRef = useRef(null);
-  useOutsideClick(wrapperRef, props.toggle);
+  useOutsideClick(wrapperRef, props.toggle, setCategory);
 
   function changePic(pic) {
     setCategory({ ...category, pic });
@@ -108,7 +110,12 @@ function Create(props) {
         category.name === undefined ||
         category.name.length < 2
       ) {
-        console.log("nelza"); ////////////////////////////////////////////////
+        console.log(category.pic);
+        if (category.pic === undefined) {
+          toast.warn("Не выбрана иконка");
+        } else {
+          toast.warn("Минимальная длинна названия 2 символа");
+        }
       } else {
         await UserService.createCategory(
           store.user,

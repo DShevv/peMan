@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Context } from "../..";
 
@@ -97,6 +98,26 @@ function RegistrationForm() {
   const [name, setName] = useState("");
   const { store } = useContext(Context);
 
+  function submit(e) {
+    e.preventDefault();
+
+    if (
+      password.first === password.second &&
+      password.first.length > 2 &&
+      name.length > 1
+    ) {
+      store.registration(email, password.first, name);
+    } else {
+      if (password.first.length < 3) {
+        toast.warn("Минимальная длинна пароля 3 символа");
+      } else if (name.length <= 1) {
+        toast.warn("Имя не может быть меньше 2 символов");
+      } else {
+        toast.warn("Пароли не совпадают");
+      }
+    }
+  }
+
   return (
     <FromContainer>
       <Title>Регистрация</Title>
@@ -130,14 +151,7 @@ function RegistrationForm() {
           onChange={(e) => setName(e.target.value)}
         />
       </InputContainer>
-      <SubmitBtn
-        onClick={(e) => {
-          e.preventDefault();
-          store.registration(email, password.first, name);
-        }}
-      >
-        Продолжить
-      </SubmitBtn>
+      <SubmitBtn onClick={submit}>Продолжить</SubmitBtn>
     </FromContainer>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Context } from "../../../..";
 import UserService from "../../../../services/userService";
@@ -195,7 +196,7 @@ function PeriodSize(props) {
       error = true;
     }
     if (error) {
-      console.log(error);
+      toast.warn("Продолжительность введена некорректно");
     } else {
       store.setPeriod(newPeriod);
       setIsOpened(false);

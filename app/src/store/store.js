@@ -1,5 +1,6 @@
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
+import { toast } from "react-toastify";
 import api, { API_URL } from "../http";
 import AuthService from "../services/authService";
 
@@ -14,6 +15,7 @@ export default class Store {
   selectedPeriod = {};
   spendings = null;
   categodies = null;
+  notification = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -50,6 +52,10 @@ export default class Store {
     this.categodies = cats;
   }
 
+  setNotification(noti) {
+    this.notification = noti;
+  }
+
   async login(email, password) {
     try {
       const response = await AuthService.login(email, password);
@@ -59,6 +65,7 @@ export default class Store {
       console.log(response);
     } catch (error) {
       console.log(error.response?.data?.message);
+      toast.warning(error.response?.data?.message);
     }
   }
   async registration(email, password, name) {
@@ -70,6 +77,7 @@ export default class Store {
       console.log(response);
     } catch (error) {
       console.log(error.response?.data?.message);
+      toast.warning(error.response?.data?.message);
     }
   }
   async logout() {

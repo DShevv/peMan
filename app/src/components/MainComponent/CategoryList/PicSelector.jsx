@@ -99,6 +99,7 @@ function PicSelector(props) {
           pictures.map((elem) => {
             return (
               <PicItem
+                selected={selectedPic}
                 key={elem.id}
                 id={elem.id}
                 setCategory={props.setCategory}

@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../../../..";
 import done from "../../../../accets/done.svg";
 import UserService from "../../../../services/userService";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   position: absolute;
@@ -173,16 +174,16 @@ function AddSpend(props) {
     try {
       let error = false;
       if (spend.value === null || spend.date === null) {
-        error = true;
+        toast.warn("Неверно введены данные");
       }
       if (
         spend.isPeriod &&
         (spend.nextPay === null || spend.NotiDate === null)
       ) {
-        error = true;
+        toast.warn("Неверно введены данные");
       }
       if (spend.value < 0) {
-        error = true;
+        toast.warn("Сумма не может быть меньше 0");
       }
       let delta = null;
       let notiDelta = null;
@@ -192,16 +193,22 @@ function AddSpend(props) {
         let noti = Date.parse(spend.NotiDate);
 
         if (date >= next || noti <= Date.now() || noti > next) {
-          error = true;
+          if (date >= next) {
+            toast.warn("Следующий платёж должен быть позже даты платежа");
+          } else if (noti > next) {
+            toast.warn(
+              "Дата напоминания не может быть позже даты следующего платежа"
+            );
+          } else {
+            toast.warn("Минимальная дата напоминания - завтра");
+          }
         } else {
           delta = next - date;
           notiDelta = noti - date;
         }
       }
-      ////// Показать ошибку
-      if (error) {
-        console.log(error);
-      } else {
+
+      if (!error) {
         await UserService.createSpendings(
           store.user.id,
           props.category,
@@ -217,7 +224,7 @@ function AddSpend(props) {
         props.click(null);
       }
     } catch (error) {
-      console.log(error);
+      toast.warn(error?.message);
     }
   }
 

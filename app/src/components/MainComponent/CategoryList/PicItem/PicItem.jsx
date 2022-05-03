@@ -10,7 +10,7 @@ const StyledCategory = styled.div`
   align-items: center;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  background: ${(props) => (props.selected ? "#CCF2F4" : "transparent")};
+  background: ${(props) => (props.selected ? "#87f4fa" : "transparent")};
 `;
 
 const Image = styled.img`
@@ -29,7 +29,10 @@ function PicItem(props) {
   }
 
   return (
-    <StyledCategory onClick={toggleSelect}>
+    <StyledCategory
+      onClick={toggleSelect}
+      selected={props.selected === props.url}
+    >
       <Image src={props.url} />
     </StyledCategory>
   );
