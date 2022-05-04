@@ -56,4 +56,16 @@ export default class UserService {
     } finally {
     }
   }
+
+  static async nextPeriodSpend(id) {
+    try {
+      const response = await api.post(`/spendings/period/change`, {
+        id,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log(error.response?.data?.message);
+    }
+  }
 }

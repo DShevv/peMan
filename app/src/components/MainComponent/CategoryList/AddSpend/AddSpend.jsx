@@ -175,14 +175,19 @@ function AddSpend(props) {
       let error = false;
       if (spend.value === null || spend.date === null) {
         toast.warn("Неверно введены данные");
+        error = true;
       }
       if (
         spend.isPeriod &&
         (spend.nextPay === null || spend.NotiDate === null)
       ) {
+        error = true;
+
         toast.warn("Неверно введены данные");
       }
       if (spend.value < 0) {
+        error = true;
+
         toast.warn("Сумма не может быть меньше 0");
       }
       let delta = null;
@@ -193,6 +198,8 @@ function AddSpend(props) {
         let noti = Date.parse(spend.NotiDate);
 
         if (date >= next || noti <= Date.now() || noti > next) {
+          error = true;
+
           if (date >= next) {
             toast.warn("Следующий платёж должен быть позже даты платежа");
           } else if (noti > next) {

@@ -168,6 +168,16 @@ class UserServise {
     }
     return result;
   }
+
+  async getPeriod(id) {
+    const spendings = await queries.getPeriod(id);
+    return spendings.recordset;
+  }
+
+  async changePeriodSpend(id) {
+    const res = await queries.changePeriodSpend(id);
+    return res;
+  }
 }
 
 module.exports = new UserServise();

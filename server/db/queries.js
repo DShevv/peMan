@@ -243,6 +243,48 @@ const getSpendings = async (id, date) => {
   }
 };
 
+const getPeriod = async (id) => {
+  try {
+    let queryStr = `select * from Spendings where Usert='${id}' and isPeriod = '1'`;
+    await sql.connect(sqlConfig);
+    const result = await sql.query(queryStr);
+    if (result.recordset.length > 0) {
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const changePeriodSpend = async (id) => {
+  try {
+    const queryStr = `select * from Spendings where id='${id}'`;
+    await sql.connect(sqlConfig);
+    let result = await sql.query(queryStr);
+    const item = result.recordset[0];
+    console.log(item.isPeriod);
+    item.Date = new Date(
+      new Date(item.Date).getTime() + Number(item.Delta)
+    ).toISOString();
+    console.log(item.Date);
+    result =
+      await sql.query(`insert into Spendings (Category, Usert, Value, Currency, Date, isPeriod, Delta, NotiDelta)
+      values (${item.Category}, ${item.Usert}, ${item.Value}, ${item.Currency}, '${item.Date}', '${item.isPeriod}', ${item.Delta}, ${item.NotiDelta})`);
+    result = await sql.query(
+      `update Spendings set isPeriod='${0}' where id=${id}`
+    );
+    if (result.recordset) {
+      return result;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports.findUser = findUser;
 module.exports.createUser = createUser;
 module.exports.findBy = findBy;
@@ -256,4 +298,6 @@ module.exports.getCategories = getCategories;
 module.exports.createCategories = createCategories;
 module.exports.getPictures = getPictures;
 module.exports.createSpendings = createSpendings;
+module.exports.getPeriod = getPeriod;
 module.exports.getSpendings = getSpendings;
+module.exports.changePeriodSpend = changePeriodSpend;

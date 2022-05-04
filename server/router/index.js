@@ -36,5 +36,11 @@ router.post(
   authMiddlewage,
   userController.createSpendings
 );
+router.post("/spendings/period", authMiddlewage, userController.getPeriod);
+router.post(
+  "/spendings/period/change",
+  authMiddlewage,
+  userController.changePeriodSpend
+);
 
 module.exports = router;

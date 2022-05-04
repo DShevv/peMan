@@ -153,6 +153,26 @@ class UserController {
       next(error);
     }
   }
+
+  async getPeriod(req, res, next) {
+    try {
+      const { user } = req.body;
+      const spendings = await userServise.getPeriod(user.id);
+      return res.json(spendings);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async changePeriodSpend(req, res, next) {
+    try {
+      const { id } = req.body;
+      const response = await userServise.changePeriodSpend(id);
+      return res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UserController();

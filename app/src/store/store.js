@@ -16,6 +16,7 @@ export default class Store {
   spendings = null;
   categodies = null;
   notification = null;
+  periodSpend = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -45,6 +46,14 @@ export default class Store {
       this.spendings = spendings;
     } else {
       this.spendings = null;
+    }
+  }
+
+  setPeriodSpend(spendings) {
+    if (typeof spendings !== "string") {
+      this.periodSpend = spendings;
+    } else {
+      this.periodSpend = null;
     }
   }
 
@@ -122,7 +131,17 @@ export default class Store {
       this.setSpendings(response.data);
     } catch (error) {
       console.log(error.response?.data?.message);
-    } finally {
+    }
+  }
+
+  async fetchPeriod() {
+    try {
+      const response = await api.post(`/spendings/period`, {
+        user: this.user,
+      });
+      this.setPeriodSpend(response.data);
+    } catch (error) {
+      console.log(error.response?.data?.message);
     }
   }
 }
