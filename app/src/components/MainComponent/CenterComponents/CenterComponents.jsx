@@ -5,6 +5,8 @@ import { observer } from "mobx-react-lite";
 import PeriodComponent from "./PeriodComponent/PeriodComponent";
 import ChartComponent from "./ChartComponent/ChartComponent";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { Context } from "../../..";
 
 const Main = styled.div`
   background-color: transparent;
@@ -20,7 +22,7 @@ const Main = styled.div`
 const ToStat = styled.div`
   width: 100%;
   height: 80px;
-  background: #ffffff;
+  background: ${(props) => props.theme.secondary};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,30 +40,34 @@ const LinkButton = styled(NavLink)`
   border-radius: 16px;
   outline: none;
   border: none;
-  background: #ccf2f4;
+  background: ${(props) => props.theme.primary};
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   text-decoration: none;
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: all 0.2s ease-in;
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
 function CenterComponents() {
+  const { store } = useContext(Context);
+
   return (
     <Main>
       <PeriodComponent />
       <ChartComponent />
-      <ToStat>
-        <LinkButton to="statistics">Статистика</LinkButton>
+      <ToStat theme={store.allThemes[store.theme]}>
+        <LinkButton theme={store.allThemes[store.theme]} to="statistics">
+          Статистика
+        </LinkButton>
       </ToStat>
     </Main>
   );

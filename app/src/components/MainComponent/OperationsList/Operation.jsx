@@ -2,13 +2,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../..";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const StyledCategory = styled.div`
   position: relative;
   width: 100%;
-  background-color: ${(props) => (props.select ? "#a4ebf3" : "#f4f9f9")};
+  background-color: ${(props) => props.theme.item};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
@@ -21,7 +19,7 @@ const StyledCategory = styled.div`
   overflow: hidden;
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
@@ -31,6 +29,7 @@ const Image = styled.img`
   width: 30px;
   object-position: center;
   object-fit: cover;
+  filter: ${(props) => (props.theme === 1 ? "invert(1)" : "")};
 `;
 
 const Title = styled.div`
@@ -41,7 +40,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const Elem = styled.div`
@@ -52,7 +51,7 @@ const Elem = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 const Time = styled.div`
   width: 50px;
@@ -61,7 +60,7 @@ const Time = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const Category = styled.div`
@@ -75,13 +74,17 @@ function Operation(props) {
   const { store } = useContext(Context);
 
   return (
-    <StyledCategory>
-      <Time>{new Date(props.data.Date).toLocaleDateString().slice(0, 5)}</Time>
+    <StyledCategory theme={store.allThemes[store.theme]}>
+      <Time theme={store.allThemes[store.theme]}>
+        {new Date(props.data.Date).toLocaleDateString().slice(0, 5)}
+      </Time>
       <Category>
-        <Image src={props.category.Pic} />
-        <Title>{props.category.Name}</Title>
+        <Image theme={store.theme} src={props.category.Pic} />
+        <Title theme={store.allThemes[store.theme]}>
+          {props.category.Name}
+        </Title>
       </Category>
-      <Elem>{props.data.Value}</Elem>
+      <Elem theme={store.allThemes[store.theme]}>{props.data.Value}</Elem>
     </StyledCategory>
   );
 }

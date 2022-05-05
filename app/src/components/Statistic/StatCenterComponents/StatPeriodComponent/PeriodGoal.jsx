@@ -11,7 +11,7 @@ const Container = styled.div`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: ${(props) => (props.warn ? "#ff2424" : "#4b4b4b")};
+  color: ${(props) => (props.warn ? "#ff2424" : props.theme.text)};
   max-height: 50%;
   justify-content: space-between;
 `;
@@ -27,6 +27,7 @@ const GoalInput = styled.input`
   outline: none;
   border: none;
   max-width: 45%;
+  color: ${(props) => props.theme.text};
 
   ::-webkit-inner-spin-button,
   ::-webkit-outer-spin-button {
@@ -71,10 +72,14 @@ function PeriodGoal() {
   }, [store.spendings]);
 
   return (
-    <Container warn={sum > goal}>
+    <Container
+      theme={store.allThemes[store.theme]}
+      warn={goal !== null ? sum > goal : false}
+    >
       <Sum>{sum}</Sum>
       /
       <GoalInput
+        theme={store.allThemes[store.theme]}
         type="number"
         placeholder="План"
         min={0}

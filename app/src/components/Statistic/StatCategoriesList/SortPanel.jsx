@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
+import { useContext } from "react";
+import { Context } from "../../..";
 
 const Conatiner = styled.div`
   margin: 5px;
   padding: 10px 28px;
   display: flex;
-  background-color: #ccf2f4;
+  background-color: ${(props) => props.theme.primary};
   border-radius: 10px;
   justify-content: space-between;
 `;
@@ -22,7 +24,7 @@ const SortButton = styled.button`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
 
   :nth-child(${(props) => props.selected})::before {
@@ -36,6 +38,8 @@ const SortButton = styled.button`
 `;
 
 function SortPanel(props) {
+  const { store } = useContext(Context);
+
   function changeSort(num) {
     if (num === props.selected.pos) {
       props.changeSelected({ ...props.selected, up: !props.selected.up });
@@ -45,8 +49,9 @@ function SortPanel(props) {
   }
 
   return (
-    <Conatiner>
+    <Conatiner theme={store.allThemes[store.theme]}>
       <SortButton
+        theme={store.allThemes[store.theme]}
         selected={props.selected.pos}
         up={props.selected.up}
         onClick={() => {
@@ -56,6 +61,7 @@ function SortPanel(props) {
         Категория
       </SortButton>
       <SortButton
+        theme={store.allThemes[store.theme]}
         selected={props.selected.pos}
         up={props.selected.up}
         onClick={() => {

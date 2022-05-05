@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import UserService from "../../../../services/userService";
 
 const Container = styled.div`
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   flex: 1 1 auto;
   width: 100%;
   display: flex;
@@ -17,6 +17,14 @@ const Container = styled.div`
   border-radius: 16px;
   justify-content: space-between;
   align-items: center;
+`;
+
+const TextField = styled.text`
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 25px;
 `;
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -35,6 +43,7 @@ const renderActiveShape = (props: any) => {
     payload,
     percent,
     value,
+    textC,
   } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
@@ -48,9 +57,9 @@ const renderActiveShape = (props: any) => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+      <TextField x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
         {payload.name}
-      </text>
+      </TextField>
       <Sector
         cx={cx}
         cy={cy}
@@ -75,21 +84,21 @@ const renderActiveShape = (props: any) => {
         fill="none"
       />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
+      <TextField
         x={ex + (cos >= 0 ? 1 : -1) * 30}
         y={ey}
         textAnchor={textAnchor}
-        fill="#333"
-      >{`${value}`}</text>
-      <text
+        fill={textC}
+      >{`${value}`}</TextField>
+      <TextField
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey + 10}
         dy={18}
         textAnchor={textAnchor}
-        fill="#999"
+        fill={textC}
       >
         {`(${(percent * 100).toFixed(2)}%)`}
-      </text>
+      </TextField>
     </g>
   );
 };
@@ -146,7 +155,7 @@ function ChartComponent() {
   }, [store.spendings, allCategories]);
 
   return (
-    <Container>
+    <Container theme={store.allThemes[store.theme]}>
       <ResponsiveContainer>
         <PieChart>
           <Pie
@@ -164,6 +173,7 @@ function ChartComponent() {
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
+                textC={store.allThemes[store.theme].text}
                 style={{
                   filter: `drop-shadow(0px 1px 11px rgb(0 0 0 / 25%)`,
                   WebkitFilter: `drop-shadow(0px 1px 11px rgb(0 0 0 / 25%)`,

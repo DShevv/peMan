@@ -17,7 +17,10 @@ const StyledList = styled.div`
 
   flex: 1 1 0;
   row-gap: 10px;
-  box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.2) inset;
+  box-shadow: ${(props) =>
+    props.theme === 1
+      ? "0px 0px 10px 2px rgb(0 0 0 / 43%) inset"
+      : "0px 0px 10px 2px rgba(34, 60, 80, 0.2) inset"};
   overflow-y: scroll;
   overflow: scroll;
   max-height: ${(props) => (props.creation ? "0" : "1000px")};
@@ -60,7 +63,7 @@ const Container = styled.div`
   justify-content: space-between;
   height: 100%;
   max-width: 330px;
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   border-bottom: 5px solid transparent;
   border-top: 5px solid transparent;
@@ -103,8 +106,8 @@ function CategoryList(props) {
   useEffect(() => {}, [categories]);
 
   return (
-    <Container>
-      <StyledList creation={isCreation}>
+    <Container theme={store.allThemes[store.theme]}>
+      <StyledList creation={isCreation} theme={store.theme}>
         {categories === null
           ? "loading..."
           : categories.map((elem) => {

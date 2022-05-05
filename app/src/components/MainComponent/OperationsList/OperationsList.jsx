@@ -16,7 +16,7 @@ const Conatiner = styled.div`
   height: 100%;
   max-width: 330px;
 
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   padding: 5px;
   border-radius: 16px;
@@ -31,7 +31,10 @@ const StyledList = styled.div`
 
   flex: 1 1 0;
   row-gap: 10px;
-  box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.2) inset;
+  box-shadow: ${(props) =>
+    props.theme === 1
+      ? "0px 0px 10px 2px rgb(0 0 0 / 43%) inset"
+      : "0px 0px 10px 2px rgba(34, 60, 80, 0.2) inset"};
   overflow-y: scroll;
   overflow: scroll;
   max-height: ${(props) => (props.creation ? "0" : "1000px")};
@@ -127,9 +130,9 @@ function OperationsList(props) {
   }
 
   return (
-    <Conatiner>
+    <Conatiner theme={store.allThemes[store.theme]}>
       <SortPanel selected={selected} changeSelected={changeSelected} />
-      <StyledList>
+      <StyledList theme={store.theme}>
         {store.spendings !== null
           ? store.spendings
               .slice()

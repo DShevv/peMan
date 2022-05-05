@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
+import { useContext } from "react";
+import { Context } from "../../..";
 
 const StyledCategory = styled.div`
   position: relative;
   width: 100%;
-  background-color: ${(props) => (props.select ? "#a4ebf3" : "#f4f9f9")};
+  background-color: ${(props) => props.theme.item};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: space-between;
@@ -19,7 +21,7 @@ const StyledCategory = styled.div`
   overflow: hidden;
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
@@ -29,6 +31,7 @@ const Image = styled.img`
   width: 30px;
   object-position: center;
   object-fit: cover;
+  filter: ${(props) => (props.theme === 1 ? "invert(1)" : "")};
 `;
 
 const Title = styled.div`
@@ -39,7 +42,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const Elem = styled.div`
@@ -50,7 +53,7 @@ const Elem = styled.div`
   font-weight: 400;
   font-size: 20px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const Category = styled.div`
@@ -61,13 +64,17 @@ const Category = styled.div`
 `;
 
 function StatCategory(props) {
+  const { store } = useContext(Context);
+
   return (
-    <StyledCategory>
+    <StyledCategory theme={store.allThemes[store.theme]}>
       <Category>
-        <Image src={props.category.pic} />
-        <Title>{props.category.name}</Title>
+        <Image theme={store.theme} src={props.category.pic} />
+        <Title theme={store.allThemes[store.theme]}>
+          {props.category.name}
+        </Title>
       </Category>
-      <Elem>{props.data.value}</Elem>
+      <Elem theme={store.allThemes[store.theme]}>{props.data.value}</Elem>
     </StyledCategory>
   );
 }

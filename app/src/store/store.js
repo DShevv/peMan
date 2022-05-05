@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 import { toast } from "react-toastify";
 import api, { API_URL } from "../http";
 import AuthService from "../services/authService";
+import themes from "../accets/themes/themes";
 
 export default class Store {
   user = {};
@@ -17,6 +18,8 @@ export default class Store {
   categodies = null;
   notification = null;
   periodSpend = null;
+  theme = 1;
+  allThemes = themes;
 
   constructor() {
     makeAutoObservable(this);
@@ -63,6 +66,10 @@ export default class Store {
 
   setNotification(noti) {
     this.notification = noti;
+  }
+
+  setTheme(theme) {
+    this.theme = theme;
   }
 
   async login(email, password) {

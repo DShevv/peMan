@@ -29,7 +29,8 @@ const DeleteBtn = styled.button`
 const StyledCategory = styled.div`
   position: relative;
   width: 100%;
-  background-color: ${(props) => (props.select ? "#a4ebf3" : "#f4f9f9")};
+  background-color: ${(props) =>
+    props.select ? props.theme.hover : props.theme.item};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   display: flex;
   min-height: 50px;
@@ -41,7 +42,7 @@ const StyledCategory = styled.div`
   overflow: hidden;
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
   :hover ${DeleteBtn} {
     left: 97%;
@@ -53,6 +54,7 @@ const Image = styled.img`
   width: 30px;
   object-position: center;
   object-fit: cover;
+  filter: ${(props) => (props.theme === 1 ? "invert(1)" : "")};
 `;
 
 const Title = styled.div`
@@ -61,7 +63,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const DelConfirm = styled.div`
@@ -127,9 +129,13 @@ function Category(props) {
   }
 
   return (
-    <StyledCategory select={props.selected} onMouseDown={select}>
-      <Image src={props.pic} />
-      <Title>{props.title}</Title>
+    <StyledCategory
+      theme={store.allThemes[store.theme]}
+      select={props.selected}
+      onMouseDown={select}
+    >
+      <Image src={props.pic} theme={store.theme} />
+      <Title theme={store.allThemes[store.theme]}> {props.title}</Title>
       {store.user.id === props.user ? <DeleteBtn onMouseDown={delPress} /> : ""}
       <DelConfirm ref={wrapperRef} comfirm={del} onMouseDown={deleteCategory}>
         Удалить

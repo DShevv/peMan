@@ -18,7 +18,7 @@ import { useEffect } from "react";
 import UserService from "../../../../services/userService";
 
 const Container = styled.div`
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   flex: 1 1 auto;
   width: 100%;
   display: flex;
@@ -122,9 +122,9 @@ function ChartComponent() {
   }, [store.spendings, allCategories]);
 
   return store.spendings === null ? (
-    <Container>no data</Container>
+    <Container theme={store.allThemes[store.theme]}>no data</Container>
   ) : (
-    <Container>
+    <Container theme={store.allThemes[store.theme]}>
       <ResponsiveContainer>
         <BarChart
           width="100%"

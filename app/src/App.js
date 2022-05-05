@@ -15,6 +15,7 @@ const Main = styled.main`
   justify-content: center;
   align-items: center;
   flex: 1 1 auto;
+  background-color: ${(props) => props.theme.backgroud};
 `;
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
       {store.isLoading ? (
         <div>Loading...</div>
       ) : (
-        <Main>
+        <Main theme={store.allThemes[store.theme]}>
           <Routes>
             {store.isAuth ? (
               <Route index element={<MainComponent />} />

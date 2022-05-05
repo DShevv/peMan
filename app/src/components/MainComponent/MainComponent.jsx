@@ -15,7 +15,7 @@ const StyledMain = styled.div`
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
-  background-color: #f5f5f5;
+  background-color: ${(props) => props.theme.backgroud};
   width: 100%;
   height: 100%;
   display: flex;
@@ -45,7 +45,7 @@ function MainComponent() {
   }, [store.periodSpend]);
 
   return (
-    <StyledMain>
+    <StyledMain theme={store.allThemes[store.theme]}>
       <CategoryList />
       <CenterComponents />
       <OperationsList />

@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import UserService from "../../../services/userService";
 import PicItem from "./PicItem/PicItem";
+import { useContext } from "react";
+import { Context } from "../../..";
 
 const StyledCategory = styled.div`
   height: ${(props) => (props.opened ? "200px" : "52px")};
   padding: 7px 24px;
-  background: #ffffff;
+  background: ${(props) => props.theme.item};
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -22,7 +24,7 @@ const StyledCategory = styled.div`
   flex-wrap: wrap;
   row-gap: 12px;
   column-gap: 12px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
   cursor: pointer;
@@ -60,6 +62,7 @@ const Container = styled.div`
 const Image = styled.img`
   height: 30px;
   width: 30px;
+  filter: ${(props) => (props.theme === 1 ? "invert(1)" : "")};
 `;
 
 const Caption = styled.div``;
@@ -68,6 +71,7 @@ function PicSelector(props) {
   const [selectedPic, setPic] = useState(null);
   const [isOpened, setIsOpened] = useState(false);
   const [pictures, setPictures] = useState(null);
+  const { store } = useContext(Context);
 
   function toggle() {
     setIsOpened(!isOpened);
@@ -91,7 +95,11 @@ function PicSelector(props) {
   }, [isOpened]);
 
   return (
-    <StyledCategory opened={isOpened} onClick={toggle}>
+    <StyledCategory
+      theme={store.allThemes[store.theme]}
+      opened={isOpened}
+      onClick={toggle}
+    >
       {isOpened ? (
         pictures === null ? (
           "loading..."
@@ -114,7 +122,7 @@ function PicSelector(props) {
         "Выберите иконку"
       ) : (
         <Container>
-          <Image src={selectedPic} />
+          <Image src={selectedPic} theme={store.theme} />
           <Caption>Выбранная иконка</Caption>
         </Container>
       )}

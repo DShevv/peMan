@@ -18,7 +18,7 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   padding: 13px 96px;
-  background: #efffff;
+  background: ${(props) => props.theme.light};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -26,7 +26,7 @@ const Title = styled.div`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: default;
 `;
 
@@ -41,7 +41,7 @@ const InputContainer = styled.div`
 const StyledInput = styled.input`
   height: 52px;
   padding: 7px 26px;
-  background: #ffffff;
+  background: ${(props) => props.theme.secondary};
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -51,12 +51,12 @@ const StyledInput = styled.input`
   line-height: 29px;
   display: flex;
   align-items: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
 
   ::placeholder {
-    color: #5c5c5c;
+    color: ${(props) => props.theme.textDark};
   }
 `;
 
@@ -67,7 +67,7 @@ const SubmitBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #a4ebf3;
+  background: ${(props) => props.theme.hover};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -77,7 +77,7 @@ const SubmitBtn = styled.button`
   line-height: 29px;
   display: flex;
   align-items: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
   cursor: pointer;
@@ -95,9 +95,10 @@ function LoginForm() {
 
   return (
     <FromContainer>
-      <Title>Вход</Title>
+      <Title theme={store.allThemes[store.theme]}>Вход</Title>
       <InputContainer>
         <StyledInput
+          theme={store.allThemes[store.theme]}
           name="email"
           type="email"
           placeholder="E-mail"
@@ -105,6 +106,7 @@ function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <StyledInput
+          theme={store.allThemes[store.theme]}
           name="password"
           type="password"
           placeholder="Пароль"
@@ -113,6 +115,7 @@ function LoginForm() {
         />
       </InputContainer>
       <SubmitBtn
+        theme={store.allThemes[store.theme]}
         onClick={(e) => {
           e.preventDefault();
           store.login(email, password);

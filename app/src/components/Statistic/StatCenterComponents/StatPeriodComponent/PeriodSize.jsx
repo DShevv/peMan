@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { useContext } from "react";
 import styled from "styled-components";
 import { Context } from "../../../..";
-import UserService from "../../../../services/userService";
 
 const Container = styled.div`
   position: relative;
@@ -12,7 +11,7 @@ const Container = styled.div`
   align-items: center;
   box-shadow: 0px 1px 11px -2px rgb(0 0 0 / 25%);
   padding: 5px 10px;
-  background: #efffff;
+  background: ${(props) => props.theme.light};
   width: 100%;
 `;
 
@@ -23,7 +22,7 @@ const Text = styled.div`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   text-align: center;
   cursor: pointer;
 `;
@@ -33,7 +32,7 @@ const TextInput = styled.input`
   min-width: 100%;
   height: 52px;
   padding: 7px 26px;
-  background: #ffffff;
+  background: ${(props) => props.theme.secondary};
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -43,12 +42,12 @@ const TextInput = styled.input`
   line-height: 29px;
   display: flex;
   align-items: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
 
   ::placeholder {
-    color: #5c5c5c;
+    color: ${(props) => props.theme.textDark};
   }
 
   ::-webkit-inner-spin-button,
@@ -70,12 +69,13 @@ const CreationCont = styled.div`
   flex-direction: column;
   row-gap: 10px;
   width: 100%;
-  background: #efffff;
+  background: ${(props) => props.theme.light};
   padding: ${(props) => (props.opened ? "10px" : "0")};
   top: 150%;
   border-radius: 10px;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   transition: all 0.2s ease-in-out;
+  z-index: 10;
 `;
 
 const Button = styled.button`
@@ -84,19 +84,19 @@ const Button = styled.button`
   border-radius: 16px;
   outline: none;
   border: none;
-  background: #ccf2f4;
+  background: ${(props) => props.theme.primary};
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
   transition: all 0.2s ease-in;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
@@ -202,8 +202,8 @@ function PeriodSize(props) {
   }
 
   return (
-    <Container ref={wrapperRef}>
-      <Text>
+    <Container ref={wrapperRef} theme={store.allThemes[store.theme]}>
+      <Text theme={store.allThemes[store.theme]}>
         {`${new Date(period.startDate)
           .toLocaleDateString()
           .slice(0, 5)} по ${new Date(
@@ -215,8 +215,13 @@ function PeriodSize(props) {
           .slice(0, 5)}`}
       </Text>
 
-      <CreationCont ref={ChangeRef} opened={isOpened}>
+      <CreationCont
+        theme={store.allThemes[store.theme]}
+        ref={ChangeRef}
+        opened={isOpened}
+      >
         <TextInput
+          theme={store.allThemes[store.theme]}
           type="text"
           onChange={(e) => {
             setNewPeriod({
@@ -233,6 +238,7 @@ function PeriodSize(props) {
           placeholder="Дата начала"
         />
         <TextInput
+          theme={store.allThemes[store.theme]}
           type="number"
           min={1}
           onChange={(e) => {
@@ -241,7 +247,9 @@ function PeriodSize(props) {
           placeholder="Количество дней"
         />
 
-        <Button onClick={changeClick}>Изменить</Button>
+        <Button theme={store.allThemes[store.theme]} onClick={changeClick}>
+          Изменить
+        </Button>
       </CreationCont>
     </Container>
   );

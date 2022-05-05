@@ -10,7 +10,7 @@ const Container = styled.div`
   position: absolute;
   max-height: 470px;
   left: 104%;
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -35,7 +35,7 @@ const Caption = styled.div`
   line-height: 29px;
   display: flex;
   justify-content: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 const TextInput = styled.input`
@@ -43,7 +43,7 @@ const TextInput = styled.input`
   min-width: 100%;
   height: 52px;
   padding: 7px 26px;
-  background: #ffffff;
+  background: ${(props) => props.theme.item};
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -53,12 +53,12 @@ const TextInput = styled.input`
   line-height: 29px;
   display: flex;
   align-items: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
 
   ::placeholder {
-    color: #5c5c5c;
+    color: ${(props) => props.theme.textDark};
   }
 
   ::-webkit-inner-spin-button,
@@ -78,19 +78,19 @@ const Button = styled.button`
   border-radius: 16px;
   outline: none;
   border: none;
-  background: #ccf2f4;
+  background: ${(props) => props.theme.primary};
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
   transition: all 0.2s ease-in;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
@@ -98,7 +98,7 @@ const Checkbox = styled.input`
   width: 25px;
   height: 25px;
   border-radius: 7px;
-  border: 1px solid #a4ebf3;
+  border: 1px solid ${(props) => props.theme.hover};
   appearance: none;
   outline: none;
   cursor: pointer;
@@ -125,7 +125,7 @@ const Label = styled.label`
   line-height: 29px;
   display: flex;
   justify-content: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
 `;
 
@@ -236,9 +236,15 @@ function AddSpend(props) {
   }
 
   return (
-    <Container ref={wrapperRef} opened={opened}>
-      <Caption>Добавление платежа</Caption>
+    <Container
+      ref={wrapperRef}
+      opened={opened}
+      theme={store.allThemes[store.theme]}
+    >
+      <Caption theme={store.allThemes[store.theme]}>Добавление платежа</Caption>
       <TextInput
+        theme={store.allThemes[store.theme]}
+        num={store.theme}
         type="number"
         placeholder="Сумма"
         onChange={(e) => {
@@ -246,6 +252,8 @@ function AddSpend(props) {
         }}
       />
       <TextInput
+        num={store.theme}
+        theme={store.allThemes[store.theme]}
         type="text"
         onChange={(e) => {
           setSpend({ ...spend, date: e.target.value });
@@ -260,13 +268,16 @@ function AddSpend(props) {
       />
       <Check>
         <Checkbox
+          theme={store.allThemes[store.theme]}
           id="Period"
           type="checkbox"
           onChange={(e) => {
             setSpend({ ...spend, isPeriod: e.target.checked });
           }}
         />
-        <Label htmlFor="Period">Периодический</Label>
+        <Label theme={store.allThemes[store.theme]} htmlFor="Period">
+          Периодический
+        </Label>
       </Check>
 
       {!spend.isPeriod ? (
@@ -274,6 +285,8 @@ function AddSpend(props) {
       ) : (
         <PeriodCont>
           <TextInput
+            num={store.theme}
+            theme={store.allThemes[store.theme]}
             type="text"
             onChange={(e) => {
               setSpend({ ...spend, nextPay: e.target.value });
@@ -287,6 +300,8 @@ function AddSpend(props) {
             placeholder="Следующий платёж"
           />
           <TextInput
+            num={store.theme}
+            theme={store.allThemes[store.theme]}
             type="text"
             onChange={(e) => {
               setSpend({ ...spend, NotiDate: e.target.value });
@@ -302,7 +317,9 @@ function AddSpend(props) {
         </PeriodCont>
       )}
 
-      <Button onClick={checkAndCreate}>Добавить</Button>
+      <Button theme={store.allThemes[store.theme]} onClick={checkAndCreate}>
+        Добавить
+      </Button>
     </Container>
   );
 }

@@ -9,7 +9,7 @@ import arrow from "../../../../accets/arrow.svg";
 import { useEffect } from "react";
 
 const Container = styled.div`
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.secondary};
   height: 100px;
   flex: 1 1 auto;
   display: flex;
@@ -23,7 +23,7 @@ const Container = styled.div`
 const Button = styled.button`
   height: 70%;
   width: 10%;
-  background-color: #ccf2f4;
+  background-color: ${(props) => props.theme.primary};
   border: none;
   outline: none;
   cursor: pointer;
@@ -36,7 +36,7 @@ const Button = styled.button`
   transform: ${(props) => (props.left ? "rotate(180deg)" : "")};
 
   :hover {
-    background-color: #a4ebf3;
+    background-color: ${(props) => props.theme.hover};
   }
 `;
 
@@ -63,8 +63,9 @@ function StatPeriodComponent() {
     setPage(null);
   }
   return (
-    <Container>
+    <Container theme={store.allThemes[store.theme]}>
       <Button
+        theme={store.allThemes[store.theme]}
         onClick={() => {
           setPage(false);
         }}
@@ -75,6 +76,7 @@ function StatPeriodComponent() {
         <PeriodGoal />
       </NameCont>
       <Button
+        theme={store.allThemes[store.theme]}
         onClick={() => {
           setPage(true);
         }}

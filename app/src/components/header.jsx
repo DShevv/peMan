@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 const StyledHeader = styled.header`
   width: 100%;
   min-height: 60px;
+  padding: 0 30px;
   display: flex;
   flex: 0 1 auto;
   justify-content: center;
@@ -16,20 +17,29 @@ const StyledHeader = styled.header`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
-  background: #efffff;
+  color: ${(props) => props.theme.text};
+  background: ${(props) => props.theme.light};
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 function Header(props) {
   const { store } = useContext(Context);
   return (
-    <StyledHeader>
-      PeMan
-      {store.isAuth ? (
-        <button onClick={(e) => store.logout()}>Выйти</button>
-      ) : (
-        ""
-      )}
+    <StyledHeader theme={store.allThemes[store.theme]}>
+      <Container>
+        {store.isAuth ? (
+          <button onClick={(e) => store.logout()}>Выйти</button>
+        ) : (
+          "PeMan"
+        )}
+      </Container>
     </StyledHeader>
   );
 }

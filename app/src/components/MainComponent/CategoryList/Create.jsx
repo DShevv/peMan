@@ -20,19 +20,19 @@ const Button = styled.button`
   border-radius: 16px;
   outline: none;
   border: none;
-  background: #ccf2f4;
+  background: ${(props) => props.theme.primary};
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   cursor: pointer;
   transition: all 0.2s ease-in;
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
 
   :hover {
-    background: #a4ebf3;
+    background: ${(props) => props.theme.hover};
   }
 `;
 
@@ -46,7 +46,7 @@ const Container = styled.div`
 const TextInput = styled.input`
   height: 52px;
   padding: 7px 26px;
-  background: #ffffff;
+  background: ${(props) => props.theme.item};
   box-shadow: 0px 0px 19px -6px rgba(0, 0, 0, 0.25);
   border-radius: 16px;
   font-family: "Roboto";
@@ -56,12 +56,12 @@ const TextInput = styled.input`
   line-height: 29px;
   display: flex;
   align-items: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
   border: none;
   outline: none;
 
   ::placeholder {
-    color: #5c5c5c;
+    color: ${(props) => props.theme.textDark};
   }
 `;
 
@@ -74,7 +74,7 @@ const Caption = styled.div`
   line-height: 29px;
   display: flex;
   justify-content: center;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 function useOutsideClick(ref, toggle, setCategory) {
@@ -131,19 +131,26 @@ function Create(props) {
     <StyledCategory opened={props.creation} ref={wrapperRef}>
       {props.creation ? (
         <Container>
-          <Caption>Создание категории</Caption>
+          <Caption theme={store.allThemes[store.theme]}>
+            Создание категории
+          </Caption>
           <PicSelector setCategory={changePic} category={category} />
           <TextInput
+            theme={store.allThemes[store.theme]}
             type="text"
             placeholder="Название"
             onChange={(e) => {
               setCategory({ ...category, name: e.target.value });
             }}
           />
-          <Button onClick={createCategory}>Создать</Button>
+          <Button theme={store.allThemes[store.theme]} onClick={createCategory}>
+            Создать
+          </Button>
         </Container>
       ) : (
-        <Button onClick={props.toggle}>Создать</Button>
+        <Button theme={store.allThemes[store.theme]} onClick={props.toggle}>
+          Создать
+        </Button>
       )}
     </StyledCategory>
   );

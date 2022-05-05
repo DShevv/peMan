@@ -16,7 +16,7 @@ const Container = styled.div`
   column-gap: 20px;
   row-gap: 10px;
   border-radius: 16px;
-  background: #ffffff;
+  background: ${(props) => props.theme.secondary};
   box-shadow: 0px 1px 11px -2px rgba(0, 0, 0, 0.25);
   padding: 10px;
 `;
@@ -29,7 +29,7 @@ const TextField = styled.div`
   font-weight: 400;
   font-size: 17px;
   line-height: 20px;
-  color: #4b4b4b;
+  color: ${(props) => props.theme.text};
 `;
 
 function PeriodStatComponent() {
@@ -102,15 +102,25 @@ function PeriodStatComponent() {
   }, [store.spendings, allCategories]);
 
   return stat.sum !== null ? (
-    <Container>
-      <TextField>Сумма: {stat.sum}</TextField>
-      <TextField>Всего операций: {stat.count}</TextField>
-      <TextField>Всего категорий: {stat.categories}</TextField>
-      <TextField>Наибольшая категория расходов: {stat.max.value}</TextField>
+    <Container theme={store.allThemes[store.theme]}>
+      <TextField theme={store.allThemes[store.theme]}>
+        Сумма: {stat.sum}
+      </TextField>
+      <TextField theme={store.allThemes[store.theme]}>
+        Всего операций: {stat.count}
+      </TextField>
+      <TextField theme={store.allThemes[store.theme]}>
+        Всего категорий: {stat.categories}
+      </TextField>
+      <TextField theme={store.allThemes[store.theme]}>
+        Наибольшая категория расходов: {stat.max.value}
+      </TextField>
     </Container>
   ) : (
     <Container>
-      <TextField>Недостаточно данных</TextField>
+      <TextField theme={store.allThemes[store.theme]}>
+        Недостаточно данных
+      </TextField>
     </Container>
   );
 }

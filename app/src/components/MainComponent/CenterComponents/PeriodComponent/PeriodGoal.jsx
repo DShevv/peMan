@@ -11,7 +11,7 @@ const Container = styled.div`
   font-weight: 400;
   font-size: 25px;
   line-height: 29px;
-  color: ${(props) => (props.warn ? "#ff2424" : "#4b4b4b")};
+  color: ${(props) => (props.warn ? "#ff2424" : props.theme.text)};
   max-height: 50%;
   justify-content: space-between;
 `;
@@ -71,7 +71,10 @@ function PeriodGoal() {
   }, [store.spendings]);
 
   return (
-    <Container warn={sum > goal}>
+    <Container
+      warn={goal !== null ? sum > goal : false}
+      theme={store.allThemes[store.theme]}
+    >
       <Sum>{sum}</Sum>
       /
       <GoalInput
