@@ -9,6 +9,7 @@ import MainComponent from "./components/MainComponent/MainComponent";
 import Statistic from "./components/Statistic/Statistic";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserService from "./services/userService";
 
 const Main = styled.main`
   display: flex;
@@ -25,6 +26,9 @@ function App() {
     if (localStorage.getItem("token")) {
       store.checkAuth();
     }
+    UserService.fetchCurrency().then((res) => {
+      store.setAllCurrency(res.data);
+    });
   }, []);
 
   return (

@@ -173,6 +173,15 @@ class UserController {
       next(error);
     }
   }
+
+  async getCurrency(req, res, next) {
+    try {
+      const response = await userServise.getCurrency();
+      return res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UserController();

@@ -21,6 +21,10 @@ export default class UserService {
     return api.get("/pictures");
   }
 
+  static async fetchCurrency() {
+    return api.get("/currencies");
+  }
+
   static async createSpendings(
     userId,
     categoryId,

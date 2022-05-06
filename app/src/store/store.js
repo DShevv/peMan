@@ -18,12 +18,27 @@ export default class Store {
   categodies = null;
   notification = null;
   periodSpend = null;
-  theme = 1;
+  theme = 0;
   allThemes = themes;
+  currency = 0;
+  prevCurr = 0;
+  allCurrency = null;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setCurrency(cur) {
+    this.prevCurr = this.currency;
+    this.currency = cur;
+    if (this.spendings !== null) {
+      this.setSpendings(this.spendings, this.prevCurr);
+    }
+  }
+  setAllCurrency(cur) {
+    this.allCurrency = cur;
+  }
+
   setAuth(bool) {
     this.isAuth = bool;
   }
@@ -44,9 +59,15 @@ export default class Store {
     this.selectedPeriod = period;
   }
 
-  setSpendings(spendings) {
+  setSpendings(spendings, cur = this.prevCurr) {
     if (typeof spendings !== "string") {
-      this.spendings = spendings;
+      this.spendings = spendings.map((elem) => {
+        elem.Value =
+          (elem.Value / this.allCurrency[cur].Value) *
+          this.allCurrency[this.currency].Value;
+        elem.Value = Math.round((elem.Value + Number.EPSILON) * 100) / 100;
+        return elem;
+      });
     } else {
       this.spendings = null;
     }

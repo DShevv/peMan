@@ -178,6 +178,11 @@ class UserServise {
     const res = await queries.changePeriodSpend(id);
     return res;
   }
+
+  async getCurrency() {
+    const res = await queries.getCurrency();
+    return res;
+  }
 }
 
 module.exports = new UserServise();

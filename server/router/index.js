@@ -42,5 +42,6 @@ router.post(
   authMiddlewage,
   userController.changePeriodSpend
 );
+router.get("/currencies", authMiddlewage, userController.getCurrency);
 
 module.exports = router;

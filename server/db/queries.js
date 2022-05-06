@@ -181,6 +181,21 @@ const getPictures = async () => {
   }
 };
 
+const getCurrency = async () => {
+  try {
+    await sql.connect(sqlConfig);
+    const result = await sql.query`select * from Currency`;
+
+    if (result.recordset) {
+      return result.recordset;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const createCategories = async (userId, name, pic) => {
   try {
     await sql.connect(sqlConfig);
@@ -301,3 +316,4 @@ module.exports.createSpendings = createSpendings;
 module.exports.getPeriod = getPeriod;
 module.exports.getSpendings = getSpendings;
 module.exports.changePeriodSpend = changePeriodSpend;
+module.exports.getCurrency = getCurrency;
