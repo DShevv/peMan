@@ -109,6 +109,80 @@ class UserServise {
     const users = await queries.findAll("Users");
     return users;
   }
+
+  async getCategories(id) {
+    const categories = await queries.getCategories(id);
+    return categories;
+  }
+  async deleteCategories(id) {
+    const categories = await queries.deleteCategory(id);
+    return categories;
+  }
+
+  async getPictures() {
+    const pictures = await queries.findAll("Pictures");
+    return pictures;
+  }
+
+  async createCategories(user, name, pic) {
+    const result = await queries.createCategories(user.id, name, pic);
+    return result;
+  }
+
+  async getSpendings(id, date) {
+    const spendings = await queries.getSpendings(id, date);
+    return spendings.recordset;
+  }
+
+  async createSpendings(
+    userId,
+    categoryId,
+    value,
+    currency,
+    date,
+    isPeriod,
+    delta,
+    notiDelta
+  ) {
+    let result;
+    if (isPeriod) {
+      result = await queries.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta
+      );
+    } else {
+      result = await queries.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod
+      );
+    }
+    return result;
+  }
+
+  async getPeriod(id) {
+    const spendings = await queries.getPeriod(id);
+    return spendings.recordset;
+  }
+
+  async changePeriodSpend(id) {
+    const res = await queries.changePeriodSpend(id);
+    return res;
+  }
+
+  async getCurrency() {
+    const res = await queries.getCurrency();
+    return res;
+  }
 }
 
 module.exports = new UserServise();

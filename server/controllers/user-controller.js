@@ -76,6 +76,112 @@ class UserController {
       next(error);
     }
   }
+
+  async getCategories(req, res, next) {
+    try {
+      const { id } = req.body;
+      const categories = await userServise.getCategories(id);
+      return res.json(categories);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteCategories(req, res, next) {
+    try {
+      const { id } = req.body;
+      const categories = await userServise.deleteCategories(id);
+      return res.json(categories);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPictures(req, res, next) {
+    try {
+      const pictures = await userServise.getPictures();
+      return res.json(pictures);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createCategories(req, res, next) {
+    try {
+      const { user, name, image } = req.body;
+      const result = await userServise.createCategories(user, name, image);
+      return res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getSpendings(req, res, next) {
+    try {
+      const { user, date } = req.body;
+      const spendings = await userServise.getSpendings(user.id, date);
+      return res.json(spendings);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async createSpendings(req, res, next) {
+    try {
+      const {
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta,
+      } = req.body;
+      const result = await userServise.createSpendings(
+        userId,
+        categoryId,
+        value,
+        currency,
+        date,
+        isPeriod,
+        delta,
+        notiDelta
+      );
+      return res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getPeriod(req, res, next) {
+    try {
+      const { user } = req.body;
+      const spendings = await userServise.getPeriod(user.id);
+      return res.json(spendings);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async changePeriodSpend(req, res, next) {
+    try {
+      const { id } = req.body;
+      const response = await userServise.changePeriodSpend(id);
+      return res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getCurrency(req, res, next) {
+    try {
+      const response = await userServise.getCurrency();
+      return res.json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new UserController();

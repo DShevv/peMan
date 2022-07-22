@@ -17,5 +17,31 @@ router.post("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 router.get("/users", authMiddlewage, userController.getUsers);
+router.post("/categories", authMiddlewage, userController.getCategories);
+router.post(
+  "/categories/delete",
+  authMiddlewage,
+  userController.deleteCategories
+);
+router.get("/pictures", authMiddlewage, userController.getPictures);
+router.post(
+  "/categories/create",
+  authMiddlewage,
+  userController.createCategories
+);
+
+router.post("/spendings", authMiddlewage, userController.getSpendings);
+router.post(
+  "/spendings/create",
+  authMiddlewage,
+  userController.createSpendings
+);
+router.post("/spendings/period", authMiddlewage, userController.getPeriod);
+router.post(
+  "/spendings/period/change",
+  authMiddlewage,
+  userController.changePeriodSpend
+);
+router.get("/currencies", authMiddlewage, userController.getCurrency);
 
 module.exports = router;
